@@ -4,15 +4,15 @@ public class Mover : MonoBehaviour
 {
     [SerializeField] private float _speed = 10;
 
-    public Vector3 MovementDirection { get; private set; }
+    private Vector3 _movementDirection;
 
     private void Update()
     {
-        transform.Translate(MovementDirection * _speed * Time.deltaTime);
+        transform.Translate(_movementDirection * _speed * Time.deltaTime);
     }
 
-    public void GetDirection(Vector3 direction)
+    public void SetDirection(Vector3 direction)
     {
-        MovementDirection = direction;
+        _movementDirection = direction;
     }
 }

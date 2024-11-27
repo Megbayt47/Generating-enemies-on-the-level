@@ -7,22 +7,15 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] private Mover _mover;
 
-    public event Action<Enemy> Deathed;
-
     private Renderer _renderer;
     private Rigidbody _rigidbody;
-    private bool _isTouch;
+
+    public event Action<Enemy> Deathed;
 
     private void Awake()
     {
         _renderer = GetComponent<Renderer>();
         _rigidbody = GetComponent<Rigidbody>();
-    }
-
-    public void Initialize(Vector3 position, Vector3 direction)
-    {
-        transform.position = position;
-        _mover.GetDirection(direction);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -31,5 +24,11 @@ public class Enemy : MonoBehaviour
         {
             Deathed?.Invoke(this);
         }
+    }
+
+    public void Initialize(Vector3 position, Vector3 direction)
+    {
+        transform.position = position;
+        _mover.SetDirection(direction);
     }
 }
