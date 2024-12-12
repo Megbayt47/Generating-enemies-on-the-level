@@ -5,7 +5,6 @@ public class Mover : MonoBehaviour
     [SerializeField] private float _speed;
 
     private Vector3 _targetPoint;
-    private Vector3 _newTargetPoint;
     private Target _target;
 
     private void Update()
@@ -15,14 +14,17 @@ public class Mover : MonoBehaviour
 
         if (transform.position == _targetPoint)
         {
-            _newTargetPoint = _target.GetRandomPosition();
-            _targetPoint = _newTargetPoint;
+            _targetPoint = _target.GetRandomPosition();
         }
     }
 
-    public void SetDirection(Vector3 point, Target target)
+    public void SetDirection(Vector3 point)
     {
         _targetPoint = point;
+    }
+
+    public void GetTarget(Target target)
+    {
         _target = target;
     }
 }

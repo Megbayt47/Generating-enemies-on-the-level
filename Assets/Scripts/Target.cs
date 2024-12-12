@@ -15,6 +15,7 @@ public class Target : MonoBehaviour
     {
         _wait = new WaitForSeconds(_delay);
         transform.position = GetRandomPosition();
+        _mover.GetTarget(this);
     }
 
     private void Start()
@@ -45,7 +46,7 @@ public class Target : MonoBehaviour
         while(enabled)
         {
             _position = GetRandomPosition();
-            _mover.SetDirection(_position, this);
+            _mover.SetDirection(_position);
 
             yield return _wait;
         }
