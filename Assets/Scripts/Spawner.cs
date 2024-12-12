@@ -4,51 +4,34 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private Enemy _enemy;
-    [SerializeField] private int _poolCount;
-    [SerializeField] private PointSpawnObject[] _startPoints;
+    [SerializeField] private Target _targetPrefabe;
+    [SerializeField] private PointSpawnObject _point;
 
     private Pool<Enemy> _pool;
-    private WaitForSeconds _wait;
-    private float _spawnTimeDelay = 2f;
+    private readonly int _poolCount = 5;
     private Vector3 _position;
-    private Vector3 _direction;
+    private Target _target;
 
     private void Awake()
     {
         _pool = new Pool<Enemy>(_enemy, _poolCount);
-        _wait = new WaitForSeconds(_spawnTimeDelay);
+        _target = Instantiate(_targetPrefabe);
     }
 
-    private void Start()
+    public void SpawnEnemys()
     {
-        StartCoroutine(SpawnEnemys());
+        _position = _point.transform.position;
+
+        Enemy enemy = _pool.GetObject();
+        enemy.Initialize(_position, _target);
+
+        enemy.Deathed += OnDeath;
     }
 
-    private IEnumerator SpawnEnemys()
-    {
-        while (enabled)
-        {
-            PointSpawnObject point = GetStartPoint();
-
-            _position = point.transform.position;
-            _direction = point.GetRandomDirection();
-
-            Enemy enemy = _pool.GetObject();
-            enemy.Initialize(_position, _direction);
-            enemy.Deathed += OnDeath;
-
-            yield return _wait;
-        }
-    }
 
     private void OnDeath(Enemy enemy)
     {
         _pool.ReleaseObject(enemy);
         enemy.Deathed -= OnDeath;
-    }
-
-    private PointSpawnObject GetStartPoint()
-    {
-        return _startPoints[Random.Range(0, _startPoints.Length)];
     }
 }

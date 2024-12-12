@@ -5,10 +5,11 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private Mover _mover;
+    [SerializeField] private NavMeshMover _navMesh;
 
     private Renderer _renderer;
     private Rigidbody _rigidbody;
+    private Target _target;
 
     public event Action<Enemy> Deathed;
 
@@ -20,15 +21,19 @@ public class Enemy : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.collider.TryGetComponent(out Trigger trigger))
+        if (collision.collider.TryGetComponent(out Target target))
         {
-            Deathed?.Invoke(this);
+            if (target == _target)
+            {
+                Deathed?.Invoke(this);
+            }
         }
     }
 
-    public void Initialize(Vector3 position, Vector3 direction)
+    public void Initialize(Vector3 position, Target target)
     {
         transform.position = position;
-        _mover.SetDirection(direction);
+        _navMesh.GetTarget(target);
+        _target = target;
     }
 }
