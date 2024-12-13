@@ -8,22 +8,35 @@ public class Target : MonoBehaviour
     [SerializeField] private PlaceObject _placeObject;
 
     private Vector3 _position;
+    private Vector3 _position2;
     private WaitForSeconds _wait;
-    private readonly float _delay = 5;
+    private readonly float _delay = 5f;
 
     private void Awake()
     {
         _wait = new WaitForSeconds(_delay);
         transform.position = GetRandomPosition();
-        _mover.GetTarget(this);
+        _position2 = GetRandomPosition();
     }
 
     private void Start()
     {
-        StartCoroutine(DirectionShift());
+        StartCoroutine(Shifting());
     }
 
-    public Vector3 GetRandomPosition()
+    private IEnumerator Shifting()
+    {
+        while(enabled)
+        {
+            _position = GetRandomPosition();
+
+            _mover.SetDirection(_position, _position2);
+
+            yield return _wait;
+        }
+    }
+
+    private Vector3 GetRandomPosition()
     {
         int negativeDevider = -2;
         int devider = 2;
@@ -39,16 +52,5 @@ public class Target : MonoBehaviour
         float positionZ = Random.Range(minRandomNumberZ, maxRandomNumberZ);
 
         return new Vector3(positionX, positionY, positionZ);
-    }
-
-    private IEnumerator DirectionShift()
-    {
-        while(enabled)
-        {
-            _position = GetRandomPosition();
-            _mover.SetDirection(_position);
-
-            yield return _wait;
-        }
     }
 }

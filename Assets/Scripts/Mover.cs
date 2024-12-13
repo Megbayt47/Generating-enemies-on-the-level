@@ -5,26 +5,22 @@ public class Mover : MonoBehaviour
     [SerializeField] private float _speed;
 
     private Vector3 _targetPoint;
-    private Target _target;
+    private Vector3 _targetPoint2;
 
     private void Update()
     {
-        transform.LookAt(_targetPoint);
-        transform.position = Vector3.MoveTowards(transform.position, _targetPoint, _speed * Time.deltaTime);
-
         if (transform.position == _targetPoint)
         {
-            _targetPoint = _target.GetRandomPosition();
+            _targetPoint = _targetPoint2;
         }
+
+        transform.LookAt(_targetPoint);
+        transform.position = Vector3.MoveTowards(transform.position, _targetPoint, _speed * Time.deltaTime);
     }
 
-    public void SetDirection(Vector3 point)
+    public void SetDirection(Vector3 point, Vector3 point2)
     {
         _targetPoint = point;
-    }
-
-    public void GetTarget(Target target)
-    {
-        _target = target;
+        _targetPoint2 = point2;
     }
 }

@@ -15,10 +15,10 @@ public class PointSpawnGenerator : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(SpawnObject());
+        StartCoroutine(SpawningObjects());
     }
 
-    private IEnumerator SpawnObject()
+    private IEnumerator SpawningObjects()
     {
         while (enabled)
         {

@@ -5,7 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private NavMeshMover _navMesh;
+    [SerializeField] private NavMeshMover _mover;
 
     private Renderer _renderer;
     private Rigidbody _rigidbody;
@@ -33,7 +33,7 @@ public class Enemy : MonoBehaviour
     public void Initialize(Vector3 position, Target target)
     {
         transform.position = position;
-        _navMesh.GetTarget(target);
+        _mover.SetTarget(target);
         _target = target;
     }
 }

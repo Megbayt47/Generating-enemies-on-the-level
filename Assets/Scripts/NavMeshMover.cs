@@ -17,7 +17,7 @@ public class NavMeshMover : MonoBehaviour
         _agent.destination = _target.transform.position;
     }
 
-    public void GetTarget(Target target)
+    public void SetTarget(Target target)
     {
         _target = target;
     }
