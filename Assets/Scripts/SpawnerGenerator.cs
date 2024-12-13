@@ -1,12 +1,12 @@
 using System.Collections;
 using UnityEngine;
 
-public class PointSpawnGenerator : MonoBehaviour
+public class SpawnerGenerator : MonoBehaviour
 {
     [SerializeField] private Spawner[] _spawners;
 
-    private WaitForSeconds _wait;
     private readonly float _spawnTimeDelay = 3f;
+    private WaitForSeconds _wait;
 
     private void Awake()
     {

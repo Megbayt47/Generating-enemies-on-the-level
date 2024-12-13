@@ -2,35 +2,30 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    [SerializeField] private Enemy _enemy;
-    [SerializeField] private Target _targetPrefabe;
-    [SerializeField] private PointSpawnObject _point;
+    [SerializeField] private Enemy _enemyPrefab;
+    [SerializeField] private Target _targetPrefab;
 
-    private Pool<Enemy> _pool;
     private readonly int _poolCount = 5;
-    private Vector3 _position;
+    private Pool<Enemy> _pool;
     private Target _target;
 
     private void Awake()
     {
-        _pool = new Pool<Enemy>(_enemy, _poolCount);
-        _target = Instantiate(_targetPrefabe);
+        _pool = new Pool<Enemy>(_enemyPrefab, _poolCount);
+        _target = Instantiate(_targetPrefab);
     }
 
     public void SpawnEnemys()
     {
-        _position = _point.transform.position;
-
         Enemy enemy = _pool.GetObject();
-        enemy.Initialize(_position, _target);
+        enemy.Initialize(transform.position, _target);
 
-        enemy.Deathed += OnDeath;
+        enemy.Died += OnDied;
     }
 
-
-    private void OnDeath(Enemy enemy)
+    private void OnDied(Enemy enemy)
     {
         _pool.ReleaseObject(enemy);
-        enemy.Deathed -= OnDeath;
+        enemy.Died -= OnDied;
     }
 }

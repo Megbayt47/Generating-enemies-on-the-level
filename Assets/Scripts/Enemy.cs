@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     private Rigidbody _rigidbody;
     private Target _target;
 
-    public event Action<Enemy> Deathed;
+    public event Action<Enemy> Died;
 
     private void Awake()
     {
@@ -25,7 +25,7 @@ public class Enemy : MonoBehaviour
         {
             if (target == _target)
             {
-                Deathed?.Invoke(this);
+                Died?.Invoke(this);
             }
         }
     }

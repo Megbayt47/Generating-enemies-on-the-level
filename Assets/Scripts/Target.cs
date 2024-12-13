@@ -4,19 +4,16 @@ using UnityEngine;
 [RequireComponent(typeof(Renderer))]
 public class Target : MonoBehaviour
 {
-    [SerializeField] private Mover _mover;
     [SerializeField] private PlaceObject _placeObject;
+    [SerializeField] private float _speed;
 
+    private readonly float _minDistance = 0.1f;
     private Vector3 _position;
-    private Vector3 _position2;
     private WaitForSeconds _wait;
-    private readonly float _delay = 5f;
 
     private void Awake()
     {
-        _wait = new WaitForSeconds(_delay);
         transform.position = GetRandomPosition();
-        _position2 = GetRandomPosition();
     }
 
     private void Start()
@@ -30,9 +27,17 @@ public class Target : MonoBehaviour
         {
             _position = GetRandomPosition();
 
-            _mover.SetDirection(_position, _position2);
+            yield return Moving();
+        }
+    }
 
-            yield return _wait;
+    private IEnumerator Moving()
+    {
+        while (Vector3.Distance(transform.position, _position) >= _minDistance)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, _position, _speed * Time.deltaTime);
+
+            yield return null;
         }
     }
 
